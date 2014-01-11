@@ -2,31 +2,32 @@ module Cornerstore
   module Model
     class Base
       include ActiveModel::Validations
+      include ActiveModel::Serializers::JSON
 
       attr_accessor :_id
       attr_accessor :_slugs
       attr_accessor :parent
       attr_accessor :created_at
       attr_accessor :updated_at
-      
+
       alias id _id
-      
+
       def initialize(attributes = {}, parent = nil)
         self.attributes = attributes
         self.parent = parent
         yield self if block_given?
       end
-      
+
       def to_param
         if _slugs and !_slugs.empty?
           _slugs.first
         end
       end
-      
+
       def ==(other)
         other.id == self.id
       end
-      
+
       alias eql? ==
 
       def inspect
@@ -85,7 +86,20 @@ module Cornerstore
         else
           response = RestClient.patch(url, wrapped_attributes, ){|response| response}
         end
-        response.success?
+
+        if response.success?
+          return true
+        else
+          if data = ActiveSupport::JSON.decode(response) and data.has_key?('errors')
+            data['errors'].each_pair do |key, messages|
+              messages.map { |message| self.errors.add(key, message) }
+            end
+
+            return false
+          else
+            return false
+          end
+        end
       end
 
       def destroy
