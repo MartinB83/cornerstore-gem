@@ -14,10 +14,6 @@ class Cornerstore::Product < Cornerstore::Model::Base
     super
   end
 
-  # def to_param
-  #   "#{_id}-#{name.parameterize}"
-  # end
-
   def attributes
     {
       name: name,

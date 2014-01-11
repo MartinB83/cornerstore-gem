@@ -3,12 +3,12 @@ class Cornerstore::Price < Cornerstore::Model::Base
                 :net,
                 :tax_rate,
                 :currency
-                
+
   validates :gross, numericality: { greater_than_or_equal_to: 0 }
   validates :net, numericality: { greater_than_or_equal_to: 0 }
   validates :tax_rate, numericality: { greater_than_or_equal_to: 0 }
   validates :currency, presence: true
-                
+
   def attributes
     {
       gross: gross,
@@ -17,7 +17,7 @@ class Cornerstore::Price < Cornerstore::Model::Base
       currency: currency
     }
   end
-  
+
   def <=> (other_object)
     case other_object
     when Integer, Float, Fixnum
@@ -28,7 +28,16 @@ class Cornerstore::Price < Cornerstore::Model::Base
       raise ArgumentError, "can only compare Integer, Float, Fixnum or Price objects with Price"
     end
   end
-  
+
+  def +(other_object)
+    self.new({
+      gross: gross + other_object.gross,
+      net: net + other_object.net,
+      currency: currency,
+      tax_rate: other_object.tax_rate == tax_rate ? tax_rate : nil
+    })
+  end
+
   def to_f
     self.gross
   end
