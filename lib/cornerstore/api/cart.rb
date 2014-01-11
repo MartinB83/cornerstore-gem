@@ -1,10 +1,10 @@
 class Cornerstore::Cart < Cornerstore::Model::Base
   include Cornerstore::Model::Writable
-  
-  attr_accessor :line_items
-  attr_accessor :reference
-  
+
+  attr_accessor :line_items, :reference, :total
+
   def initialize(attributes = {}, parent=nil)
+    self.total = Cornerstore::Price.new(attributes.delete('total'))
     self.line_items = Cornerstore::LineItem::Resource.new(self, attributes.delete('line_items') || [])
     super
   end
@@ -13,18 +13,18 @@ class Cornerstore::Cart < Cornerstore::Model::Base
     reference
   end
   alias to_param id
-  
-  def total
-    line_items.inject(0) {|sum,item| sum + item.price.gross}
-  end
-  
-  def empty
+
+  def empty!
     line_items.delete_all
     line_items.empty?
   end
-  
+
   def empty?
     line_items.empty?
+  end
+
+  def checkout_url
+    "https://checkout.#{Cornerstore.options[:account_name]}.cornerstore.io/#{self.reference}"
   end
 
   class Resource < Cornerstore::Resource::Base
@@ -37,10 +37,10 @@ module Cornerstore::SessionCart
   def self.included(base)
     base.send(:before_filter, :find_or_create_by_session)
   end
-  
-  def find_or_create_by_session
+
+  def find_or_create_by_session(attributes = {})
     if not session[:cart_id] or not @cart = Cornerstore::Cart.find(session[:cart_id]) rescue nil
-      @cart = Cornerstore::Cart.create
+      @cart = Cornerstore::Cart.create(attributes)
       session[:cart_id] = @cart.id
     end
     @cart
