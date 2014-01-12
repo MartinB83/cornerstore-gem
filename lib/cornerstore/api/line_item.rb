@@ -54,11 +54,21 @@ class Cornerstore::LineItem < Cornerstore::Model::Base
         product_id: variant.product._id,
         line_item: attr
       }
-      response = RestClient.post("#{Cornerstore.root_url}/carts/#{@parent.id}/line_items/derive.json", attributes)
-      attributes = ActiveSupport::JSON.decode(response)
-      line_item = @klass.new(attributes, @parent)
-      push line_item
-      line_item
+
+      RestClient.post("#{Cornerstore.root_url}/carts/#{@parent.id}/line_items/derive.json", attributes) do |response, request, result, &block|
+        if response.code == 201
+          attributes = ActiveSupport::JSON.decode(response)
+          line_item = @klass.new(attributes, @parent)
+        elsif response.code == 422 and data = ActiveSupport::JSON.decode(response) and data.has_key?('errors')
+          line_item = @klass.new(attr, @parent)
+          data['errors'].each_pair do |key, messages|
+            messages.map { |message| line_item.errors.add(key, message) }
+          end
+        end
+
+        push line_item
+        line_item
+      end
     end
   end
 end
