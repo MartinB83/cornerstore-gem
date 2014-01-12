@@ -6,8 +6,8 @@ require 'cornerstore/version'
 Gem::Specification.new do |gem|
   gem.name          = "cornerstore"
   gem.version       = Cornerstore::VERSION
-  gem.authors       = ["Johannes Treitz"]
-  gem.email         = ["jotreitz@gmail.com"]
+  gem.authors       = ['Johannes Treitz', 'Christian Weyer']
+  gem.email         = ['jt@crispymtn.com', 'cw@crispymtn.com']
   gem.description   = "This is a client for the Cornerstore e-commerce API"
   gem.summary       = "This is a client for the Cornerstore e-commerce API"
   gem.homepage      = ""
@@ -17,6 +17,6 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
 
-  gem.add_dependency 'rest-client'  
+  gem.add_dependency 'rest-client'
   gem.add_dependency 'activemodel'
 end
