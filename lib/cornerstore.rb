@@ -23,7 +23,8 @@ module Cornerstore
     }
   end
   def self.root_url
-    "https://api.#{Cornerstore.options[:account_name]}.cornerstore.io/v1"
+   # "https://api.#{Cornerstore.options[:account_name]}.cornerstore.io/v1"
+   'http://api.burger-store.cornerstore.dev/v1'
   end
 
   def self.assets_url

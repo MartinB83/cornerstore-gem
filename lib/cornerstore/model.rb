@@ -40,7 +40,7 @@ module Cornerstore
 
       def attributes=(attributes)
         attributes ||= {}
-        attributes.each do |name, value|
+        attributes.each_pair do |name, value|
           send("#{name}=", value) if respond_to?("#{name}=")
         end
       end
