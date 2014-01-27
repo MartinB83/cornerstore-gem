@@ -23,7 +23,7 @@ module Cornerstore
     }
   end
   def self.root_url
-   "https://api.#{Cornerstore.options[:account_name]}.cornerstore.io/v1"
+   "https://#{Cornerstore.options[:account_name]}.cornerstore.io/api/v1"
   end
 
   def self.assets_url
