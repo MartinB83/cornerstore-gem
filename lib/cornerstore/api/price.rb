@@ -2,7 +2,8 @@ class Cornerstore::Price < Cornerstore::Model::Base
   attr_accessor :gross,
                 :net,
                 :tax_rate,
-                :currency
+                :currency,
+                :amount
 
   validates :gross, numericality: { greater_than_or_equal_to: 0 }
   validates :net, numericality: { greater_than_or_equal_to: 0 }
@@ -14,7 +15,8 @@ class Cornerstore::Price < Cornerstore::Model::Base
       gross: gross,
       net: net,
       tax_rate: tax_rate,
-      currency: currency
+      currency: currency,
+      amount: amount
     }
   end
 
@@ -39,6 +41,6 @@ class Cornerstore::Price < Cornerstore::Model::Base
   end
 
   def to_f
-    self.gross
+    self.gross || self.amount
   end
 end
