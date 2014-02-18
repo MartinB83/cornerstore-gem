@@ -38,9 +38,9 @@ class Cornerstore::Product < Cornerstore::Model::Base
   def offer?
     variants.any? { |v| v.offer? }
   end
-  
+
   def new?
-    self.created_at <= 2.weeks.ago
+    self.created_at >= 2.weeks.ago
   end
 
   def cover_image
