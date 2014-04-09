@@ -13,7 +13,7 @@ class Cornerstore::Search
   def run
     return false unless @keywords
 
-    RestClient.get("#{Cornerstore.root_url}/products/search", params: {keywords: @keywords}) do |response, request, result, &block|
+    RestClient.get("#{Cornerstore.root_url}/products/search?keywords=#{URI::encode(@keywords)}", Cornerstore.headers) do |response, request, result, &block|
       if response.code == 200
         data = ActiveSupport::JSON.decode(response)
         @scores   = data['scores']

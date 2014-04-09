@@ -80,11 +80,10 @@ module Cornerstore
         return false unless valid?
         wrapped_attributes = {self.class.name.split('::').last.underscore => self.attributes}
         if new?
-          #response = RestClient.post(url, wrapped_attributes, verify_ssl: OpenSSL::SSL::VERIFY_NONE){|response| response}
-          response = RestClient.post(url, wrapped_attributes){|response| response}
+          response = RestClient.post(url, wrapped_attributes, Cornerstore.headers){|response| response}
           self.attributes = ActiveSupport::JSON.decode(response)
         else
-          response = RestClient.patch(url, wrapped_attributes, ){|response| response}
+          response = RestClient.patch(url, wrapped_attributes, Cornerstore.headers){|response| response}
         end
 
         if response.success?
@@ -103,7 +102,7 @@ module Cornerstore
       end
 
       def destroy
-        RestClient.delete(url).success?
+        RestClient.delete(url, Cornerstore.headers).success?
       end
 
       def self.create(attributes = {}, &block)

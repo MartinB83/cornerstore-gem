@@ -55,7 +55,7 @@ class Cornerstore::LineItem < Cornerstore::Model::Base
         line_item: attr
       }
 
-      RestClient.post("#{Cornerstore.root_url}/carts/#{@parent.id}/line_items/derive.json", attributes) do |response, request, result, &block|
+      RestClient.post("#{Cornerstore.root_url}/carts/#{@parent.id}/line_items/derive.json", attributes, Cornerstore.headers) do |response, request, result, &block|
         if response.code == 201
           attributes = ActiveSupport::JSON.decode(response)
           line_item = @klass.new(attributes, @parent)
