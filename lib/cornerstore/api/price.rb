@@ -5,10 +5,11 @@ class Cornerstore::Price < Cornerstore::Model::Base
                 :currency,
                 :amount
 
-  validates :gross, numericality: { greater_than_or_equal_to: 0 }
-  validates :net, numericality: { greater_than_or_equal_to: 0 }
-  validates :tax_rate, numericality: { greater_than_or_equal_to: 0 }
-  validates :currency, presence: true
+  validates :gross, numericality: { greater_than_or_equal_to: 0 }, if: Proc.new { |p| not p.amount }
+  validates :amount, numericality: { greater_than_or_equal_to: 0 }, if: Proc.new { |p| not p.gross }
+  validates :net, numericality: { greater_than_or_equal_to: 0, allow_nil: true }
+  validates :tax_rate, numericality: { greater_than_or_equal_to: 0, allow_nil: true }
+  validates :currency, presence: true, inclusion: { in: %w( EUR USD ) }
 
   def attributes
     {
