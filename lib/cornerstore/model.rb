@@ -21,6 +21,8 @@ module Cornerstore
       def to_param
         if _slugs and !_slugs.empty?
           _slugs.first
+        else
+          _id
         end
       end
 
@@ -71,6 +73,8 @@ module Cornerstore
       def new?
         id.nil?
       end
+
+      alias new_record? new?
 
       def to_key
         new? ? [id] : nil
