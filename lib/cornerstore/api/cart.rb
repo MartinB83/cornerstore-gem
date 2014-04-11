@@ -39,7 +39,7 @@ class Cornerstore::Cart < Cornerstore::Model::Base
   end
 
   def checkout_url
-    "https://#{Cornerstore.options[:account_name]}.cornerstore.io/checkout/#{self.reference}"
+    "https://#{Cornerstore.subdomain}.cornerstore.io/checkout/#{self.reference}"
   end
 
   class Resource < Cornerstore::Resource::Base
