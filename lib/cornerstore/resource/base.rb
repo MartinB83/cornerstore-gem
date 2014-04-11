@@ -1,4 +1,5 @@
 class Cornerstore::Resource::Base
+  include Enumerable
   attr_accessor :parent
 
   def initialize(parent = nil, ary = nil, name = nil)
@@ -54,12 +55,27 @@ class Cornerstore::Resource::Base
   def to_a
     @objects
   end
+  alias_method :to_ary, :to_a
+
+  def each(&block)
+    to_a.each(&block)
+  end
+
+  def size
+    @objects.size
+  end
+  alias_method :count, :size
+  alias_method :length, :size
+
+  def empty?
+    @objects.empty?
+  end
+
+  alias blank? empty?
 
   def method_missing(method, *args, &block)
     if Cornerstore::Resource::Writable.method_defined?(method)
       raise "Sorry, this part of the Cornerstore-API is currently read-only"
-    elsif Array.method_defined?(method)
-      to_a.send(method, *args, &block)
     else
       super
     end

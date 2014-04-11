@@ -6,7 +6,7 @@ class Cornerstore::Cart < Cornerstore::Model::Base
 
   def initialize(attributes = {}, parent=nil)
     self.total = Cornerstore::Price.new(attributes.delete('total'))
-    self.line_items = Cornerstore::LineItem::Resource.new(self, attributes.delete('line_items') || [])
+    self.line_items = Cornerstore::LineItem::Resource.new(self, attributes.delete('line_items') || [], 'line_items')
     super
   end
 

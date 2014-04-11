@@ -8,9 +8,9 @@ class Cornerstore::Product < Cornerstore::Model::Base
                 :properties
 
   def initialize(attributes = {}, parent = nil)
-    self.images = Cornerstore::Image::Resource.new(self, attributes.delete('images') || [])
-    self.variants = Cornerstore::Variant::Resource.new(self, attributes.delete('variants') || [])
-    self.properties = Cornerstore::Property::Resource.new(self, attributes.delete('properties') || [])
+    self.images     = Cornerstore::Image::Resource.new(self, attributes.delete('images') || [], 'images')
+    self.variants   = Cornerstore::Variant::Resource.new(self, attributes.delete('variants') || [], 'variants')
+    self.properties = Cornerstore::Property::Resource.new(self, attributes.delete('properties') || [], 'properties')
     super
   end
 
