@@ -1,4 +1,4 @@
-class Cornerstore::Shipments < Cornerstore::Model::Base
+class Cornerstore::Shipment < Cornerstore::Model::Base
   attr_accessor :carrier,
     :tracking_number,
     :created_at,
@@ -18,4 +18,7 @@ class Cornerstore::Shipments < Cornerstore::Model::Base
   end
   alias_method :shipped_items, :line_items
 
+
+  class Resource < Cornerstore::Resource::Base
+  end
 end

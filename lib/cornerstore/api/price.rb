@@ -42,6 +42,10 @@ class Cornerstore::Price < Cornerstore::Model::Base
   end
 
   def to_f
-    self.gross || self.amount
+    @amount || @gross
+  end
+
+  def amount
+    @amount || @gross
   end
 end

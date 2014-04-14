@@ -13,23 +13,33 @@ class Cornerstore::Order < Cornerstore::Model::Base
     :payment_costs,
     :sales_tax,
     :total,
-    :customer_comment
+    :customer_comment,
+
+    :customer,
+    :shipping_address,
+    :billing_address,
+    :payment_means,
+    :requested_carrier,
+    :line_items,
+    :shipments,
+    :cancellations
 
   def initialize(attributes = {}, parent=nil)
-    self.payment_costs      = Cornerstore::Price.new(attributes.delete('payment_costs')) if attributes.has_key?('payment_costs')
-    self.shipping_costs     = Cornerstore::Price.new(attributes.delete('shipping_costs')) if attributes.has_key?('shipping_costs')
+    self.payment_costs      = Cornerstore::Price.new(attributes.delete('payment_costs')) if attributes['payment_costs']
+    self.shipping_costs     = Cornerstore::Price.new(attributes.delete('shipping_costs')) if attributes['shipping_costs']
     self.subtotal           = Cornerstore::Price.new(attributes.delete('subtotal'))
-    self.sales_tax          = Cornerstore::Price.new(attributes.delete('sales_tax')) if attributes.has_key?('sales_tax')
+    self.sales_tax          = Cornerstore::Price.new(attributes.delete('sales_tax')) if attributes['sales_tax']
     self.total              = Cornerstore::Price.new(attributes.delete('total'))
 
+    self.customer           = Cornerstore::Customer.new(attributes.delete('customer'))
     self.shipping_address   = Cornerstore::Address.new(attributes.delete('shipping_address'))
     self.billing_address    = Cornerstore::Address.new(attributes.delete('billing_address'))
     self.payment_means      = Cornerstore::PaymentMeans.new(attributes.delete('payment_means'))
-    self.requested_carrier  = Cornerstore::Carrier.new(attributes.delete('carrier'))
+    self.requested_carrier  = Cornerstore::Carrier.new(attributes.delete('requested_carrier'))
 
     self.line_items         = Cornerstore::LineItem::Resource.new(self, attributes.delete('line_items') || [], 'line_items')
     self.shipments          = Cornerstore::Shipment::Resource.new(self, attributes.delete('shipments') || [], 'shipments')
-    self.cancelations       = Cornerstore::Cancelation::Resource.new(self, attributes.delete('cancelations') || [], 'cancelations')
+    self.cancellations      = Cornerstore::Cancellation::Resource.new(self, attributes.delete('cancelations') || [], 'cancelations')
     super
   end
 

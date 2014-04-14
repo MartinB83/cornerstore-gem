@@ -1,4 +1,4 @@
-class Cornerstore::Cancellations < Cornerstore::Model::Base
+class Cornerstore::Cancellation < Cornerstore::Model::Base
   attr_accessor :created_at,
     :line_item_ids
 
@@ -15,4 +15,6 @@ class Cornerstore::Cancellations < Cornerstore::Model::Base
   end
   alias_method :canceled_items, :line_items
 
+  class Resource < Cornerstore::Resource::Base
+  end
 end

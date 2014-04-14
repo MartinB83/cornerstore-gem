@@ -53,7 +53,7 @@ module Cornerstore
       end
 
       def self.method_missing(method, *args, &block)
-        if (self.const_defined?("Resource") and self.const_get("Resource").method_defined?(method)) or Array.method_defined?(method)
+        if (self.const_defined?("Resource") and self.const_get("Resource").method_defined?(method))
           self.const_get("Resource").new.send(method, *args, &block)
         else
           super
