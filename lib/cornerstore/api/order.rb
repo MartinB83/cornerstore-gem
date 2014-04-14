@@ -1,0 +1,74 @@
+class Cornerstore::Order < Cornerstore::Model::Base
+  attr_accessor :number,
+    :reference,
+    :checkout_id,
+    :placed_at,
+    :invoice_number,
+    :invoiced_at,
+    :checkout_started_at,
+    :requested_carrier,
+    :weight,
+    :subtotal,
+    :shipping_costs,
+    :payment_costs,
+    :sales_tax,
+    :total,
+    :customer_comment
+
+  def initialize(attributes = {}, parent=nil)
+    self.payment_costs      = Cornerstore::Price.new(attributes.delete('payment_costs')) if attributes.has_key?('payment_costs')
+    self.shipping_costs     = Cornerstore::Price.new(attributes.delete('shipping_costs')) if attributes.has_key?('shipping_costs')
+    self.subtotal           = Cornerstore::Price.new(attributes.delete('subtotal'))
+    self.sales_tax          = Cornerstore::Price.new(attributes.delete('sales_tax')) if attributes.has_key?('sales_tax')
+    self.total              = Cornerstore::Price.new(attributes.delete('total'))
+
+    self.shipping_address   = Cornerstore::Address.new(attributes.delete('shipping_address'))
+    self.billing_address    = Cornerstore::Address.new(attributes.delete('billing_address'))
+    self.payment_means      = Cornerstore::PaymentMeans.new(attributes.delete('payment_means'))
+    self.requested_carrier  = Cornerstore::Carrier.new(attributes.delete('carrier'))
+
+    self.line_items         = Cornerstore::LineItem::Resource.new(self, attributes.delete('line_items') || [], 'line_items')
+    self.shipments          = Cornerstore::Shipment::Resource.new(self, attributes.delete('shipments') || [], 'shipments')
+    self.cancelations       = Cornerstore::Cancelation::Resource.new(self, attributes.delete('cancelations') || [], 'cancelations')
+    super
+  end
+
+  def requires_shipment?
+    self.line_items.any? { |li| li.requires_shipment? }
+  end
+
+  # Returns true if at least one line item of this order is shipped
+  def shipped?
+    !self.shipments.empty?
+  end
+
+  # Returns true if at least one line item of this order is canceled
+  def canceled?
+    !self.cancellations.empty?
+  end
+
+  def invoiced?
+    !self.invoice_number.blank?
+  end
+
+  # Returns true if all line items are shipped
+  def completely_shipped?
+    self.shipments.collect(&:shipped_items).flatten.size == self.line_items.size
+  end
+
+  # Returns true if all line items are canceled
+  def completely_canceled?
+    self.cancellations.collect(&:canceled_items).flatten.size == self.line_items.size
+  end
+
+  def handling_costs
+    if self.shipping_costs or self.payment_costs
+      (self.shipping_costs || Cash.new) + (self.payment_costs || Cash.new)
+    end
+  end
+
+  def check_signature
+    # TODO: Implement signature check
+    return true
+  end
+end

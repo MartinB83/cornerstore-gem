@@ -47,17 +47,3 @@ class Cornerstore::Cart < Cornerstore::Model::Base
     include Cornerstore::Resource::Writable
   end
 end
-
-module Cornerstore::SessionCart
-  def self.included(base)
-    base.send(:before_filter, :find_or_create_by_session)
-  end
-
-  def find_or_create_by_session(attributes = {})
-    if not session[:cart_id] or not @cart = Cornerstore::Cart.find(session[:cart_id]) rescue nil
-      @cart = Cornerstore::Cart.create(attributes)
-      session[:cart_id] = @cart.id
-    end
-    @cart
-  end
-end

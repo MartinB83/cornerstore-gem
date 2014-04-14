@@ -6,8 +6,6 @@ require 'cornerstore/resource'
 require 'cornerstore/model'
 require 'cornerstore/api'
 
-require_relative '../tests/dummy'
-
 module RestClient::AbstractResponse
   def success?
     (200..207).include? code
