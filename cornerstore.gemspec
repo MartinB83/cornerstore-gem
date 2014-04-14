@@ -10,7 +10,7 @@ Gem::Specification.new do |gem|
   gem.email         = ['jt@crispymtn.com', 'cw@crispymtn.com']
   gem.description   = "This is a client for the Cornerstore e-commerce API"
   gem.summary       = "This is a client for the Cornerstore e-commerce API"
-  gem.homepage      = ""
+  gem.homepage      = "https://www.github.com/crispymtn/cornerstore-gem"
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
@@ -18,4 +18,6 @@ Gem::Specification.new do |gem|
 
   gem.add_dependency 'rest-client'
   gem.add_dependency 'activemodel'
+  gem.add_development_dependency "rspec"
+
 end
