@@ -39,7 +39,10 @@ class Cornerstore::Order < Cornerstore::Model::Base
 
     self.line_items         = Cornerstore::LineItem::Resource.new(self, attributes.delete('line_items') || [], 'line_items')
     self.shipments          = Cornerstore::Shipment::Resource.new(self, attributes.delete('shipments') || [], 'shipments')
-    self.cancellations      = Cornerstore::Cancellation::Resource.new(self, attributes.delete('cancelations') || [], 'cancelations')
+    self.cancellations      = Cornerstore::Cancellation::Resource.new(self, attributes.delete('cancellations') || [], 'cancellations')
+
+    self.placed_at          = DateTime.parse(attributes.delete('placed_at')) unless attributes['placed_at'].blank?
+
     super
   end
 
@@ -73,7 +76,7 @@ class Cornerstore::Order < Cornerstore::Model::Base
 
   def handling_costs
     if self.shipping_costs or self.payment_costs
-      (self.shipping_costs || Cash.new) + (self.payment_costs || Cash.new)
+      (self.shipping_costs || 0) + (self.payment_costs || 0)
     end
   end
 

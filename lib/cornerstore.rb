@@ -24,7 +24,7 @@ module Cornerstore
   end
 
   def self.root_url
-   "https://#{subdomain}.cornerstore.io/api/v1"
+    "https://#{subdomain}.cornerstore.io/api/v1"
   end
 
   def self.assets_url

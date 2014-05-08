@@ -24,18 +24,21 @@ class Cornerstore::Price < Cornerstore::Model::Base
   def <=> (other_object)
     case other_object
     when Integer, Float, Fixnum
-      other_object <=> self.gross
+      other_object <=> self.amount
     when Cornerstore::Price
-      other_object.gross <=> self.gross
+      other_object.amount <=> self.amount
     else
       raise ArgumentError, "can only compare Integer, Float, Fixnum or Price objects with Price"
     end
   end
 
   def +(other_object)
+    return self if other_object == 0
+
     self.new({
-      gross: gross + other_object.gross,
-      net: net + other_object.net,
+      gross:    gross + other_object.gross,
+      net:      net + other_object.net,
+      amount:   amount + other_object.amount,
       currency: currency,
       tax_rate: other_object.tax_rate == tax_rate ? tax_rate : nil
     })

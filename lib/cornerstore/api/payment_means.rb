@@ -13,6 +13,13 @@ class Cornerstore::PaymentMeans < Cornerstore::Model::Base
 
   alias_method :type, :kind
 
+  def initialize(attributes = {}, parent=nil)
+    self.paid_at      = DateTime.parse(attributes.delete('paid_at')) unless attributes['paid_at'].blank?
+    self.refunded_at  = DateTime.parse(attributes.delete('refunded_at')) unless attributes['refunded_at'].blank?
+
+    super
+  end
+
   def paid?
     self.paid_at.is_a?(DateTime)
   end

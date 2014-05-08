@@ -6,6 +6,8 @@ class Cornerstore::Cancellation < Cornerstore::Model::Base
 
   def initialize(attributes = {}, parent=nil)
     self.line_item_ids = attributes.delete('canceled_items')
+    self.created_at    = DateTime.parse(attributes.delete('created_at')) unless attributes['created_at'].blank?
+
     super
   end
 

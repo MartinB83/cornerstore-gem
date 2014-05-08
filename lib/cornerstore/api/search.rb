@@ -1,4 +1,6 @@
 class Cornerstore::Search
+  extend ActiveModel::Naming
+
   attr_accessor :keywords, :products, :scores
   alias :results :products
 
@@ -8,6 +10,14 @@ class Cornerstore::Search
 
   def results?
     !@products.empty?
+  end
+
+  def to_key
+    ['']
+  end
+
+  def persisted?
+    false
   end
 
   def run
