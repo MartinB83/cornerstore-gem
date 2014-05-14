@@ -12,13 +12,19 @@ class Cornerstore::Price < Cornerstore::Model::Base
   validates :currency, presence: true, inclusion: { in: %w( EUR USD ) }
 
   def attributes
-    {
-      gross: gross,
-      net: net,
-      tax_rate: tax_rate,
-      currency: currency,
-      amount: amount
-    }
+    if gross or tax_rate
+      {
+        gross: gross,
+        net: net,
+        tax_rate: tax_rate,
+        currency: currency
+      }
+    else
+      {
+        amount: amount,
+        currency: currency
+      }
+    end
   end
 
   def <=> (other_object)
@@ -50,5 +56,12 @@ class Cornerstore::Price < Cornerstore::Model::Base
 
   def amount
     @amount || @gross
+  end
+
+  def currency_symbol
+    {
+      'USD' => '$',
+      'EUR' => '€',
+    }[currency]
   end
 end
