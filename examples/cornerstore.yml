@@ -1,0 +1,11 @@
+development:
+  subdomain: your-shop-staging
+  api_key: dffe7d7382199992dfe # You find the API keys in the Cornerstore Manager under Settings > API
+
+test:
+  subdomain: your-shop-staging
+  api_key: dffe7d7382199992dfe
+
+production:
+  subdomain: your-shop
+  api_key: deee636888117727782
