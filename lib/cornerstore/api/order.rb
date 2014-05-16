@@ -24,7 +24,7 @@ class Cornerstore::Order < Cornerstore::Model::Base
     :shipments,
     :cancellations
 
-  def initialize(attributes = {}, parent=nil)
+  def initialize(attributes, parent=nil)
     self.payment_costs      = Cornerstore::Price.new(attributes.delete('payment_costs')) if attributes['payment_costs']
     self.shipping_costs     = Cornerstore::Price.new(attributes.delete('shipping_costs')) if attributes['shipping_costs']
     self.subtotal           = Cornerstore::Price.new(attributes.delete('subtotal'))

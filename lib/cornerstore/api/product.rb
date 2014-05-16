@@ -60,11 +60,6 @@ class Cornerstore::Product < Cornerstore::Model::Base
     end
     alias find_by_collection by_collection
 
-    def by_keywords(keywords)
-      self.clone.set_filter(:keywords, keywords)
-    end
-    alias find_by_keywords by_keywords
-
     def order(key)
       first = %w(name popularity created_at price)
       second = %w(desc asc)

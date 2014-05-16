@@ -29,7 +29,7 @@ class Cornerstore::Resource::Base
   end
 
   def find_by_id_or_param(id_or_param)
-    find_by_id id_or_param.to_s #.split("-").first
+    find_by_id id_or_param.to_s
   end
 
   def find_by_id(id)
