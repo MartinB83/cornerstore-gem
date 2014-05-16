@@ -1,4 +1,6 @@
 class Cornerstore::Price < Cornerstore::Model::Base
+  include Comparable
+
   attr_accessor :gross,
                 :net,
                 :tax_rate,
@@ -30,24 +32,31 @@ class Cornerstore::Price < Cornerstore::Model::Base
   def <=> (other_object)
     case other_object
     when Integer, Float, Fixnum
-      other_object <=> self.amount
+      self.amount <=> other_object
     when Cornerstore::Price
-      other_object.amount <=> self.amount
+      self.amount <=> other_object.amount
     else
-      raise ArgumentError, "can only compare Integer, Float, Fixnum or Price objects with Price"
+      raise ArgumentError, 'can only compare Integer, Float, Fixnum or Price objects with Price'
     end
   end
 
   def +(other_object)
-    return self if other_object == 0
+    return self if not other_object or other_object == 0
 
-    self.new({
-      gross:    gross + other_object.gross,
-      net:      net + other_object.net,
-      amount:   amount + other_object.amount,
-      currency: currency,
-      tax_rate: other_object.tax_rate == tax_rate ? tax_rate : nil
-    })
+    if gross
+      Cornerstore::Price.new({
+        gross:    gross + other_object.gross,
+        net:      net + other_object.net,
+        currency: currency,
+        tax_rate: other_object.tax_rate == tax_rate ? tax_rate : nil
+      })
+    else
+      Cornerstore::Price.new({
+        amount:   amount + other_object.amount,
+        currency: currency
+      })
+
+    end
   end
 
   def to_f
