@@ -3,6 +3,7 @@ class Cornerstore::Price < Cornerstore::Model::Base
 
   attr_accessor :gross,
                 :net,
+                :tax,
                 :tax_rate,
                 :currency,
                 :amount
@@ -56,12 +57,6 @@ class Cornerstore::Price < Cornerstore::Model::Base
         currency: currency
       })
 
-    end
-  end
-
-  def tax
-    if @gross and @net
-      @gross - @net
     end
   end
 
