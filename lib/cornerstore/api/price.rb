@@ -59,6 +59,12 @@ class Cornerstore::Price < Cornerstore::Model::Base
     end
   end
 
+  def tax
+    if @gross and @net
+      @gross - @net
+    end
+  end
+
   def to_f
     @amount || @gross
   end
