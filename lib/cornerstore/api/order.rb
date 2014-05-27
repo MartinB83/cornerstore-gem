@@ -42,6 +42,7 @@ class Cornerstore::Order < Cornerstore::Model::Base
     self.cancellations      = Cornerstore::Cancellation::Resource.new(self, attributes.delete('cancellations') || [], 'cancellations')
 
     self.placed_at          = DateTime.parse(attributes.delete('placed_at')) unless attributes['placed_at'].blank?
+    self.invoiced_at        = DateTime.parse(attributes.delete('invoiced_at')) unless attributes['invoiced_at'].blank?
 
     super
   end
