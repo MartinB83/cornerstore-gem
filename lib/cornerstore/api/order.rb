@@ -76,8 +76,14 @@ class Cornerstore::Order < Cornerstore::Model::Base
   end
 
   def handling_costs
-    if self.shipping_costs or self.payment_costs
-      (self.shipping_costs || 0) + (self.payment_costs || 0)
+    if self.shipping_costs and self.payment_costs
+      self.shipping_costs + self.payment_costs
+    elsif self.shipping_costs
+      self.shipping_costs
+    elsif self.payment_costs
+      self.payment_costs
+    else
+      nil      
     end
   end
 
