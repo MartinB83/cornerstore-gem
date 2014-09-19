@@ -27,8 +27,10 @@ class Cornerstore::Variant < Cornerstore::Model::Base
   end
 
   def initialize(attributes = {}, parent = nil)
-    self.price = Cornerstore::Price.new(attributes.delete('price'))
-    self.properties = Cornerstore::Property::Resource.new(self, attributes.delete('properties') || [])
+    self.price                      = Cornerstore::Price.new(attributes.delete('price'))
+    self.properties                 = Cornerstore::Property::Resource.new(self, attributes.delete('properties') || [])
+    self.differentiating_properties = Cornerstore::DifferentiatingProperty::Resource.new(self, attributes.delete('differentiating_properties') || [])
+
     super
   end
 
