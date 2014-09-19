@@ -10,7 +10,9 @@ class Cornerstore::LineItem < Cornerstore::Model::Base
                 :weight,
                 :properties,
                 :product,
-                :variant
+                :variant,
+                :product_id,
+                :variant_id
 
   alias cart parent
 
