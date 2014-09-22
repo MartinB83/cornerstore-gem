@@ -32,8 +32,8 @@ class Cornerstore::Order < Cornerstore::Model::Base
     self.total              = Cornerstore::Price.new(attributes.delete('total'))
 
     self.customer           = Cornerstore::Customer.new(attributes.delete('customer'))
-    self.shipping_address   = Cornerstore::Address.new(attributes.delete('shipping_address'))
-    self.billing_address    = Cornerstore::Address.new(attributes.delete('billing_address'))
+    self.shipping_address   = Cornerstore::ShippingAddress.new(attributes.delete('shipping_address'))
+    self.billing_address    = Cornerstore::BillingAddress.new(attributes.delete('billing_address'))
     self.payment_means      = Cornerstore::PaymentMeans.new(attributes.delete('payment_means'))
     self.requested_carrier  = Cornerstore::Carrier.new(attributes.delete('requested_carrier'))
 
@@ -83,7 +83,7 @@ class Cornerstore::Order < Cornerstore::Model::Base
     elsif self.payment_costs
       self.payment_costs
     else
-      nil      
+      nil
     end
   end
 
