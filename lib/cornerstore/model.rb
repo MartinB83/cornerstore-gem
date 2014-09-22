@@ -62,10 +62,17 @@ module Cornerstore
 
       def method_missing(method, *args, &block)
         if Writable.method_defined?(method)
-          raise "Sorry, this part of the Cornerstore-API is currently read-only"
+          raise "Sorry, this part of the Cornerstore-API is read-only"
         else
           super
         end
+      end
+    end
+
+    module Singleton
+      def url(depth = 1)
+        root = (@parent && depth > 0) ? @parent.url(depth-1) : Cornerstore.root_url
+        "#{root}/#{self.class.name.split('::').last.underscore.singularize}"
       end
     end
 
@@ -110,7 +117,7 @@ module Cornerstore
       end
 
       def self.create(attributes = {}, &block)
-        self.new(attributes, &block).tap{|obj| obj.save}
+        self.new(attributes, &block).tap { |obj| obj.save }
       end
     end
   end
