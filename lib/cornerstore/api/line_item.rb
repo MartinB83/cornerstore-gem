@@ -23,15 +23,15 @@ class Cornerstore::LineItem < Cornerstore::Model::Base
   validates :price, presence: true
   validates :weight, numericality: { greater_than: 0, allow_nil: true }
   validate do
-    errors.add(:price, 'Price must be valid') unless price.valid?
+    errors.add(:price, 'must be valid') unless price.valid?
   end
 
   def initialize(attributes = {}, parent = nil)
-    self.price = Cornerstore::Price.new(attributes.delete('price'))
-    self.total = Cornerstore::Price.new(attributes.delete('total'))
+    self.price      = Cornerstore::Price.new(attributes.delete('price'))
+    self.total      = Cornerstore::Price.new(attributes.delete('total'))
     self.properties = Cornerstore::Property::Resource.new(self, attributes.delete('properties') || [])
-    self.product = Cornerstore::Product.new(attributes.delete('product')) if attributes['product']
-    self.variant = Cornerstore::Variant.new(attributes.delete('variant'), self.product) if attributes['variant']
+    self.product    = Cornerstore::Product.new(attributes.delete('product')) if attributes['product']
+    self.variant    = Cornerstore::Variant.new(attributes.delete('variant'), self.product) if attributes['variant']
     super
   end
 
@@ -44,6 +44,13 @@ class Cornerstore::LineItem < Cornerstore::Model::Base
       price: price.attributes,
       weight: weight
     }
+  end
+
+  def attributes=(attributes)
+    super
+    if hash = attributes.delete('price') and not hash.is_a?(Cornerstore::Price)
+      self.price = Cornerstore::Price.new(hash)
+    end
   end
 
   class Resource < Cornerstore::Resource::Base
