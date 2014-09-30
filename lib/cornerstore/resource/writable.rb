@@ -14,7 +14,7 @@ module Cornerstore::Resource::Writable
       push obj
       obj
     else
-      nil
+      obj
     end
   end
 end
