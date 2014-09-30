@@ -12,7 +12,7 @@ class Cornerstore::Price < Cornerstore::Model::Base
   validates :amount, numericality: { greater_than_or_equal_to: 0 }, if: Proc.new { |p| not p.gross }
   validates :net, numericality: { greater_than_or_equal_to: 0, allow_nil: true }
   validates :tax_rate, numericality: { greater_than_or_equal_to: 0, allow_nil: true }
-  validates :currency, presence: true, inclusion: { in: %w( EUR USD ) }
+  validates :currency, inclusion: { in: %w( EUR USD ) }
 
   def attributes
     if gross or tax_rate
@@ -51,12 +51,12 @@ class Cornerstore::Price < Cornerstore::Model::Base
         currency: currency,
         tax_rate: other_object.tax_rate == tax_rate ? tax_rate : nil
       })
+
     else
       Cornerstore::Price.new({
         amount:   amount + other_object.amount,
         currency: currency
       })
-
     end
   end
 

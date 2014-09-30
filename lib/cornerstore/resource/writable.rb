@@ -1,20 +1,16 @@
 module Cornerstore::Resource::Writable
   def destroy_all
-    @objects.delete_if {|obj| obj.destroy}
+    @objects.delete_if { |obj| obj.destroy }
     self
   end
 
-  def new(attributes={}, &block)
-    @klass.new(attributes, &block).tap{|obj| push obj}
+  def new(attributes = {}, &block)
+    @klass.new(attributes, &block).tap{ |obj| push obj }
   end
 
-  def create(attributes={}, &block)
+  def create(attributes = {}, &block)
     obj = @klass.new(attributes, @parent, &block)
-    if obj.save
-      push obj
-      obj
-    else
-      obj
-    end
+    self.push(obj) if obj.save
+    return obj
   end
 end
