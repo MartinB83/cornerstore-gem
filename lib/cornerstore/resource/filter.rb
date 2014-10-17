@@ -10,7 +10,7 @@ module Cornerstore::Resource::Filter
   
   def limit(limit)
     limit = limit.to_i.abs
-    raise "limit must be greater/equal to 1" unless limit > 1
+    raise "limit must be greater/equal to 1" if limit.zero?
     self.clone.set_filter(:limit, limit)
   end
   
