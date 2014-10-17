@@ -45,7 +45,7 @@ describe Cornerstore::Order do
     end
 
     it 'should return a shipping address' do
-      expect(@order.billing_address).to be_kind_of(Cornerstore::Address)
+      expect(@order.shipping_address).to be_kind_of(Cornerstore::Address)
     end
 
     it 'should return the line items' do
