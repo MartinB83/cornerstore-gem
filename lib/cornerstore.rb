@@ -12,7 +12,11 @@ module RestClient::AbstractResponse
   end
 end
 
-RestClient.log = 'stdout'
+RestClient.log = Object.new.tap do |proxy|
+  def proxy.<<(message)
+    Rails.logger.info message
+  end
+end
 
 module Cornerstore
   class << self
