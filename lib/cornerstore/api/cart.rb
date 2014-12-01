@@ -33,6 +33,7 @@ class Cornerstore::Cart < Cornerstore::Model::Base
     self.subtotal         = Cornerstore::Price.new(attributes.delete('subtotal'))
     self.sales_tax        = Cornerstore::Price.new(attributes.delete('sales_tax')) if attributes['sales_tax']
 
+    self.customer         = Cornerstore::Customer.new(attributes.delete('customer'), self)
     self.line_items       = Cornerstore::LineItem::Resource.new(self, attributes.delete('line_items') || [], 'line_items')
     self.billing_address  = Cornerstore::BillingAddress.new(attributes.delete('billing_address') || nil, self)
     self.shipping_address = Cornerstore::ShippingAddress.new(attributes.delete('shipping_address') || nil, self)
@@ -56,6 +57,14 @@ class Cornerstore::Cart < Cornerstore::Model::Base
       paid_email_callback_url: paid_email_callback_url,
       canceled_email_callback_url: canceled_email_callback_url
     }
+  end
+
+  def create_customer(attributes = {})
+    self.customer ||= Cornerstore::Customer.new
+    self.customer.attributes = attributes
+    self.customer.save
+
+    return self.customer
   end
 
   def create_billing_address(attributes = {})
