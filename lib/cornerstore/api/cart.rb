@@ -83,6 +83,25 @@ class Cornerstore::Cart < Cornerstore::Model::Base
     return self.shipping_address
   end
 
+  def available_shipping_options
+    @available_shipping_options ||= Cornerstore::AvailableShippingOption::Resource.new(self)
+  end
+
+  def available_payment_options
+
+  end
+
+  def take_shipping_option(option_or_id)
+    if option = option_or_id.is_a?(Cornerstore::AvailableShippingOption) ? option_or_id : self.available_shipping_options.select { |so| so.id == option_or_id }.first
+      option.save
+
+      return option
+    else
+      return false
+    end
+  end
+
+
   def empty!
     line_items.delete_all
     line_items.empty?
