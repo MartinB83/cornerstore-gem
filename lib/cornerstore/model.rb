@@ -87,9 +87,12 @@ module Cornerstore
         new? ? [id] : nil
       end
 
+      def wrapped_attributes
+        { self.class.name.split('::').last.underscore => self.attributes }
+      end
+
       def save
         return false unless valid?
-        wrapped_attributes = {self.class.name.split('::').last.underscore => self.attributes}
         if new?
           response = RestClient.post(url, wrapped_attributes, Cornerstore.headers){|response| response}
           self.attributes = ActiveSupport::JSON.decode(response)
