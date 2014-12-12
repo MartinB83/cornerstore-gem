@@ -88,7 +88,7 @@ class Cornerstore::Cart < Cornerstore::Model::Base
   end
 
   def available_payment_options
-
+    @available_payment_options ||= Cornerstore::AvailablePaymentOption::Resource.new(self)
   end
 
   def take_shipping_option(option_or_id)
@@ -101,10 +101,24 @@ class Cornerstore::Cart < Cornerstore::Model::Base
     end
   end
 
+  def take_payment_option(option_or_id)
+    if option = option_or_id.is_a?(Cornerstore::AvailablePaymentOption) ? option_or_id : self.available_shipping_options.select { |po| po.id == option_or_id }.first
+      option.save
+
+      return option
+    else
+      return false
+    end
+  end
 
   def empty!
     line_items.delete_all
     line_items.empty?
+  end
+
+  def place!
+    self.placed_at = DateTime.now
+    self.save
   end
 
   def empty?
