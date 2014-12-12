@@ -16,6 +16,7 @@ class Cornerstore::Cart < Cornerstore::Model::Base
     :shipped_email_callback_url,
     :paid_email_callback_url,
     :canceled_email_callback_url,
+    :placed_at,
 
     :customer,
     :available_shipping_options,
@@ -55,7 +56,8 @@ class Cornerstore::Cart < Cornerstore::Model::Base
       placed_email_callback_url: placed_email_callback_url,
       shipped_email_callback_url: shipped_email_callback_url,
       paid_email_callback_url: paid_email_callback_url,
-      canceled_email_callback_url: canceled_email_callback_url
+      canceled_email_callback_url: canceled_email_callback_url,
+      placed_at: placed_at
     }
   end
 
