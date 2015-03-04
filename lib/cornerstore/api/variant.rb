@@ -8,7 +8,8 @@ class Cornerstore::Variant < Cornerstore::Model::Base
                 :weight,
                 :unit,
                 :properties,
-                :differentiating_properties
+                :differentiating_properties,
+                :storage_identifier
 
   alias product parent
   alias offer? offer
@@ -22,7 +23,8 @@ class Cornerstore::Variant < Cornerstore::Model::Base
       offer: offer,
       oversell: oversell,
       weight: weight,
-      unit: unit
+      unit: unit,
+      storage_identifier: storage_identifier
     }
   end
 
