@@ -12,7 +12,8 @@ class Cornerstore::LineItem < Cornerstore::Model::Base
                 :product,
                 :variant,
                 :product_id,
-                :variant_id
+                :variant_id,
+                :requires_shipment
 
   alias cart parent
 
@@ -42,7 +43,8 @@ class Cornerstore::LineItem < Cornerstore::Model::Base
       qty: qty,
       unit: unit,
       price: price.attributes,
-      weight: weight
+      weight: weight,
+      requires_shipment: requires_shipment
     }
   end
 
